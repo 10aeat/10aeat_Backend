@@ -1,6 +1,7 @@
 package com.final_10aeat.global.security.principal;
 
 import com.final_10aeat.domain.member.entity.Member;
+import com.final_10aeat.global.entity.Loginable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,7 @@ import java.util.Collection;
 public class MemberPrincipal implements UserDetails {
 
     @Getter
-    private final Member member;
+    private final Loginable member;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

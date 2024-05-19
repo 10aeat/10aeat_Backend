@@ -45,9 +45,9 @@ public class JwtTokenGenerator {
         return claims.get("email", String.class);
     }
 
-    public String getRole(String token) {
+    public MemberRole getRole(String token) {
         Claims claims = extractClaim(token);
-        return claims.get("role", String.class);
+        return Enum.valueOf(MemberRole.class,claims.get("role", String.class));
     }
 
     private Claims extractClaim(String token) {

@@ -9,13 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MemberDetailsProvider implements UserDetailsService {
+public class MemberDetailsProvider {
 
     private final MemberRepository memberRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) {
+    public UserDetails loadMemberByEmail(String email) {
         return new MemberPrincipal(memberRepository.findByEmail(email)
                 .orElseThrow(MemberNotExistException::new));
+    }
+
+    public UserDetails loadAdminByEmail(String email){
+        return null;// TODO Admin 엔티티 작성 이후 추가
     }
 }

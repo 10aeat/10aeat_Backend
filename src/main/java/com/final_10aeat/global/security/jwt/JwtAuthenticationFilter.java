@@ -1,6 +1,7 @@
 package com.final_10aeat.global.security.jwt;
 
 
+import com.final_10aeat.domain.member.entity.MemberRole;
 import com.final_10aeat.global.security.principal.MemberDetailsProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -50,14 +51,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Authentication getEmailPassword(String token) {
         String email = jwtTokenGenerator.getUserEmail(token);
+        MemberRole role = jwtTokenGenerator.getRole(token);
         if (email != null){
-            UserDetails userDetails = memberDetailsProvider.loadUserByUsername(email);
-            List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            return new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    authorities
-            );
+            if(MemberRole.OWNER == role){
+                UserDetails userDetails = memberDetailsProvider.loadMemberByEmail(email);
+                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                return new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        authorities
+                );
+            }
+           if (MemberRole.ADMIN == role){
+               UserDetails userDetails = memberDetailsProvider.loadAdminByEmail(email);
+               List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+               return new UsernamePasswordAuthenticationToken(
+                       userDetails,
+                       null,
+                       authorities
+               );
+           }
         }
         return null;
     }
