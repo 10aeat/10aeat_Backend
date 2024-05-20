@@ -44,6 +44,6 @@ public class MemberController {
         컨트롤러단에선 오히려 회원 정보를 이용 할 때 Loginable에서 없는 정보가 필요하면
         null로 입력되는 문제가 발생함
         */
-        return ResponseDTO.okWithData(member.getName());
+        return ResponseDTO.okWithData(member.getName());// null
     }
 }
